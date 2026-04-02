@@ -1,0 +1,14 @@
+[Unit]
+Description=Initialize USB gadgets
+After=syslog.target
+
+[Service]
+Type=oneshot
+User=root
+ExecStart=/path/init-usb-gadget
+RemainAfterExit=true
+ExecStop=/path/remove-usb-gadget
+StandardOutput=journal
+
+[Install]
+WantedBy=local-fs.target
