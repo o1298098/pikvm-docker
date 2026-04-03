@@ -76,6 +76,16 @@ for n in /dev/kvmd-hid /dev/kvmd-hid-keyboard /dev/kvmd-hid-mouse; do
   fi
 done
 
+if [[ "${KVMD_JANUS:-1}" == "1" ]]; then
+  if [[ ! -d /dev/snd ]]; then
+    echo "pikvm-docker: 未挂载 /dev/snd，WebRTC 音频会失败。请在 docker run 增加: -v /dev/snd:/dev/snd" >&2
+  else
+    if [[ "${KVMD_ALSA_CHMOD666:-1}" == "1" ]]; then
+      chmod 666 /dev/snd/* 2>/dev/null || true
+    fi
+  fi
+fi
+
 NGX_PREFIX="/etc/kvmd/nginx"
 NGX_EXTRA=()
 if [[ -f "$NGX_PREFIX/nginx.conf.mako" ]] && command -v kvmd-nginx-mkconf >/dev/null 2>&1; then

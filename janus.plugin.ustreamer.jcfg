@@ -1,0 +1,10 @@
+video: {
+        sink = "kvmd::ustreamer::h264"
+}
+acap: {
+        device = "plughw:3,0"
+        sampling_rate = 44100
+}
+aplay: {
+        device = "plughw:UAC2Gadget,0"
+}

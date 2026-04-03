@@ -39,6 +39,17 @@ docker run --rm -it \
 
 If your device nodes differ, replace `hidg*` / `video*` accordingly.
 
+### 2.1) Docker Compose (example)
+
+[`docker-compose.yml`](docker-compose.yml) matches option A and bind-mounts `override.yaml` and `janus.plugin.ustreamer.jcfg` (edit `acap.device` per `arecord -l` on the host when using HDMI audio capture).
+
+```bash
+docker compose build
+docker compose up -d
+```
+
+Logs: `docker compose logs -f`
+
 ### 3) Enable USB Gadget on the host (HID keyboard/mouse)
 
 1. Edit `/boot/config.txt` (in `[all]`):

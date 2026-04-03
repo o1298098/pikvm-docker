@@ -1,0 +1,31 @@
+# PiKVM kvmd (e.g. Raspberry Pi / ARM host)
+# Run: docker compose up -d
+# Build: docker compose build
+#
+# Notes:
+# - network_mode: host helps WebRTC; do not rely on ports: in this mode.
+# - Mounting all of /dev includes /dev/snd. If you switch to explicit --device only, add -v /dev/snd:/dev/snd.
+# - janus.plugin.ustreamer.jcfg: USB HDMI dongles (e.g. MS2109) need a custom acap section; set acap.device from host `arecord -l`.
+
+services:
+  kvmd:
+    build: .
+    image: pikvm-kvmd:local
+    container_name: pikvm-kvmd
+    restart: unless-stopped
+    privileged: true
+    network_mode: host
+    volumes:
+      - /dev:/dev
+      - /sys:/sys
+      - /run:/run
+      - ./override.yaml:/etc/kvmd/override.yaml:ro
+      - ./janus.plugin.ustreamer.jcfg:/etc/kvmd/janus/janus.plugin.ustreamer.jcfg:ro
+    environment:
+      # Optional: set admin password on first boot (kvmd htpasswd)
+      # - WEBUI_ADMIN_PASSWD=change-me
+      # Disable Janus: KVMD_JANUS=0
+      - KVMD_JANUS=1
+    # Optional: match host audio group GID (see: getent group audio); alternative to run.sh chmod on /dev/snd/*
+    # group_add:
+    #   - "29"

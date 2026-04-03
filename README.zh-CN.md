@@ -39,6 +39,17 @@ docker run --rm -it \
 
 如果你的设备节点不同，把 `hidg*` / `video*` 替换成你的实际路径即可。
 
+### 2.1）Docker Compose（示例）
+
+仓库根目录提供 [`docker-compose.yml`](docker-compose.yml)，与方案 A 等价，并挂载本仓库的 `override.yaml` 与 `janus.plugin.ustreamer.jcfg`（HDMI 音频采集时请按 `arecord -l` 修改其中 `acap.device`）。
+
+```bash
+docker compose build
+docker compose up -d
+```
+
+查看日志：`docker compose logs -f`
+
 ### 3）在宿主机启用 USB Gadget（HID 键盘/鼠标）
 
 1. 修改 `/boot/config.txt`（`[all]` 部分加入）：
